@@ -51,11 +51,19 @@ router.get("/:id", async (req, res) => {
 // @route DELETE api/items/:id
 // @desc Delete An Item
 router.delete("/delete-card/:id", (req, res) => {
+  console.log(`Received request to delete card with customId: ${req.params.id}`);
   Item.findOneAndDelete({ customId: req.params.id })
-    .then((item) => res.json({ success: true }))
-    .catch((err) =>
-      res.status(404).json({ noitemfound: "No item found with that ID" })
-    );
+    .then((item) => {
+      if (item) {
+        res.json({ success: true });
+      } else {
+        res.status(404).json({ noitemfound: "No item found with that ID" });
+      }
+    })
+    .catch((err) => {
+      console.error("Error occurred while deleting item:", err);
+      res.status(500).json({ error: "An error occurred" });
+    });
 });
 
 router.put("/update-tree/:id", async (req, res) => {
