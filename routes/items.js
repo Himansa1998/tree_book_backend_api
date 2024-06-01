@@ -25,6 +25,7 @@ router.post("/", async (req, res) => {
     });
     const item = await newItem.save();
     res.json(item);
+    console.log(item)
   } catch (err) {
     console.error("Error saving item:", err);
     res
@@ -49,7 +50,7 @@ router.get("/:id", async (req, res) => {
 });
 // @route DELETE api/items/:id
 // @desc Delete An Item
-router.delete("/:id", (req, res) => {
+router.delete("/delete-card/:id", (req, res) => {
   Item.findOneAndDelete({ customId: req.params.id })
     .then((item) => res.json({ success: true }))
     .catch((err) =>
