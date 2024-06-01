@@ -58,4 +58,27 @@ router.delete("/delete-card/:id", (req, res) => {
     );
 });
 
+router.put("/update-tree/:id", async (req, res) => {
+  try {
+    const updatedItem = await Item.findOneAndUpdate(
+      { customId: req.params.id },
+      {
+        name: req.body.name,
+        scientificName: req.body.scientificName,
+        description: req.body.description,
+      },
+      { new: true }
+    );
+
+    if (!updatedItem) {
+      return res.status(404).json({ error: "No item found with that ID" });
+    }
+
+    res.json(updatedItem);
+  } catch (err) {
+    console.error("Error updating item:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 module.exports = router;
